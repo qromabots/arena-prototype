@@ -60,6 +60,14 @@ A schema-level `.default()` (e.g. `disconnectGraceMs`) is *specification*, not g
 
 This keeps schemas and the store layout free to evolve until v1 stabilizes. (The `version` field on `ArenaConfigExport` is a forward marker only — no importer needs to honor old versions yet.)
 
+### Latest stable libraries
+
+**Adopt the current stable release of every dependency.** No pinning to old majors, no lagging behind:
+
+- When scaffolding or adding a package, install the latest stable version (`npm install <pkg>@latest`) and record it in *Library versions*.
+- Verify versions are current before each milestone; the table notes the date it was last checked.
+- This pairs with *No backwards compatibility* — there is no installed base to hold a dependency back. Prereleases/betas are excluded; "latest stable" means the published `latest` dist-tag.
+
 ---
 
 ## Project identity
@@ -76,20 +84,22 @@ The **gathering space** is an **arena** in domain language, APIs, routes, and ty
 
 ---
 
-## Library versions (latest stable as of plan date)
+## Library versions (latest stable, verified 2026-05-16)
+
+Per the *Latest stable libraries* principle, install the current stable release; the figures below are the latest verified on the plan date.
 
 | Package | Version |
 |---|---|
-| `tinybase` | 8.2.0 |
-| `react` / `react-dom` | 19.2.5 |
-| `vite` | 8.0.10 |
-| `@tanstack/react-router` | 1.168.24 |
-| `@tanstack/router-devtools` | 1.166.13 |
-| `zod` | 4.3.6 |
+| `tinybase` | 8.4.0 |
+| `react` / `react-dom` | 19.2.6 |
+| `vite` | 8.0.13 |
+| `@tanstack/react-router` | 1.170.3 |
+| `@tanstack/router-devtools` | 1.167.0 |
+| `zod` | 4.4.3 |
 | `typescript` | 6.0.3 |
-| `wrangler` | 4.85.0 (`do` transport only) |
-| `@cloudflare/workers-types` | 4.20260425.1 (`do` transport only) |
-| `trystero` | latest (`p2p` transport only) |
+| `wrangler` | 4.92.0 (`do` transport only) |
+| `@cloudflare/workers-types` | 4.20260516.1 (`do` transport only) |
+| `trystero` | 0.24.0 (`p2p` transport only) |
 
 TinyBase's DO synchronizer (`tinybase/synchronizers/synchronizer-ws-server-durable-object`) and SQL storage persister (`tinybase/persisters/persister-durable-object-sql-storage`) ship in the main `tinybase` package — no separate installs.
 

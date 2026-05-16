@@ -1,0 +1,12 @@
+{
+  "name": "arena-prototype",
+  "private": true,
+  "workspaces": [
+    "platform/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @arena-prototype/web",
+    "build": "npm run build -w @arena-prototype/web",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}
