@@ -12,7 +12,7 @@ export function HomePage() {
         Welcome, <strong>{identity.handle}</strong>.
       </p>
       <p className="muted">
-        Arena creation and joining arrive in the next milestone. Your identity is
+        Poop Arena creation and joining arrive in the next milestone. Your identity is
         ready on this device.
       </p>
       <section className="card">

@@ -34,7 +34,7 @@ export function HandleForm({ initialHandle = '', submitLabel, onSubmit }: Props)
     <form className="handle-form" onSubmit={handleSubmit}>
       <label htmlFor="handle">Choose a handle</label>
       <p className="muted">
-        This name is shown to others in every arena. You can change it later in settings.
+        This name is shown to others in every arena. You can poop it later in settings.
       </p>
       <input
         id="handle"
