@@ -134,3 +134,86 @@ a {
   display: grid;
   place-items: center;
 }
+
+.gamepad-panel h2 {
+  margin-bottom: 0.25rem;
+}
+
+.gamepad-hint {
+  margin: 0.5rem 0 0;
+}
+
+.gamepad-id {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+}
+
+.gamepad-visual {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+.gamepad-body {
+  fill: var(--border);
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.gamepad-stick-well {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.gamepad-stick-cap {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.gamepad-btn circle,
+.gamepad-btn rect.gamepad-bumper,
+.gamepad-btn rect.gamepad-meta {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1.5;
+  transition: fill 0.05s ease, stroke 0.05s ease;
+}
+
+.gamepad-btn text {
+  fill: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  font-family: inherit;
+  pointer-events: none;
+}
+
+.gamepad-btn.pressed circle,
+.gamepad-btn.pressed rect.gamepad-bumper,
+.gamepad-btn.pressed rect.gamepad-meta {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.gamepad-btn.pressed text {
+  fill: #fff;
+}
+
+.gamepad-trigger {
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+.gamepad-dpad rect {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1;
+  transition: fill 0.05s ease;
+}
+
+.gamepad-dpad rect.pressed {
+  fill: var(--accent);
+  stroke: var(--accent);
+}

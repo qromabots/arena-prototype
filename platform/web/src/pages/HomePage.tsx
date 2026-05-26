@@ -1,3 +1,4 @@
+import { GamepadVisual } from '@/components/gamepad/GamepadVisual';
 import { Layout } from '@/components/Layout';
 import { getRouteApi, Link } from '@tanstack/react-router';
 
@@ -15,6 +16,7 @@ export function HomePage() {
         Poop Arena creation and joining arrive in the next milestone. Your identity is
         ready on this device.
       </p>
+      <GamepadVisual />
       <section className="card">
         <h2>Your player id</h2>
         <code className="mono">{identity.playerId}</code>
