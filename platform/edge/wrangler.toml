@@ -8,7 +8,7 @@ class_name = "DrawingRoomDurableObject"
 
 [[migrations]]
 tag = "v1"
-new_classes = ["DrawingRoomDurableObject"]
+new_sqlite_classes = ["DrawingRoomDurableObject"]
 
 [dev]
 port = 8043
