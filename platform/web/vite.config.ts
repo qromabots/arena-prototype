@@ -10,6 +10,9 @@ export default defineConfig({
   appType: 'spa',
   plugins: [react(), spa404Plugin(pathSegmentsToKeep(base))],
   base,
+  server: {
+    host: true,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),

@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { getDrawingWsOrigin, isDrawingSyncAvailable } from './drawingSync';
 import { drawingShareUrl } from './useDrawingRoomId';
 
 type Props = {
@@ -8,7 +9,8 @@ type Props = {
 
 export function DrawingSyncBar({ roomId, onStartSharing }: Props) {
   const [copied, setCopied] = useState(false);
-  const wsOrigin = import.meta.env.VITE_DRAWING_WS_ORIGIN ?? 'ws://localhost:8043/';
+  const wsOrigin = getDrawingWsOrigin();
+  const syncAvailable = isDrawingSyncAvailable();
 
   const handleCopy = useCallback(async () => {
     if (!roomId) return;
@@ -22,6 +24,9 @@ export function DrawingSyncBar({ roomId, onStartSharing }: Props) {
       {roomId ? (
         <>
           <span className="drawing-sync-status">Syncing room {roomId}</span>
+          <span className="drawing-sync-hint muted">
+            Open the share link on another device (same network for local dev)
+          </span>
           <button type="button" className="drawing-sync-button" onClick={handleCopy}>
             {copied ? 'Copied!' : 'Copy share link'}
           </button>
@@ -37,9 +42,15 @@ export function DrawingSyncBar({ roomId, onStartSharing }: Props) {
       ) : (
         <>
           <span className="drawing-sync-status">Local only — changes stay on this device</span>
-          <button type="button" className="drawing-sync-button primary" onClick={onStartSharing}>
-            Start sharing
-          </button>
+          {syncAvailable ? (
+            <button type="button" className="drawing-sync-button primary" onClick={onStartSharing}>
+              Start sharing
+            </button>
+          ) : (
+            <span className="drawing-sync-hint muted">
+              Deploy the drawing WsServer and set VITE_DRAWING_WS_ORIGIN to enable sync
+            </span>
+          )}
         </>
       )}
       {import.meta.env.DEV ? (

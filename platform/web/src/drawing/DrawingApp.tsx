@@ -27,10 +27,8 @@ import {
 } from './constants';
 import { SelectedIdContext } from './SelectedIdContext';
 import { useDrawingRoomId } from './useDrawingRoomId';
+import { getDrawingWsUrl } from './drawingSync';
 import './drawing.css';
-
-const DRAWING_WS_ORIGIN =
-  import.meta.env.VITE_DRAWING_WS_ORIGIN ?? 'ws://localhost:8043/';
 
 const INITIAL_CONTENT = [
   {
@@ -86,7 +84,7 @@ export function DrawingApp() {
       if (!roomId) return;
       const synchronizer = await createWsSynchronizer(
         s,
-        new WebSocket(`${DRAWING_WS_ORIGIN}${roomId}`),
+        new WebSocket(getDrawingWsUrl(roomId)),
       );
       await synchronizer.startSync();
       checkpoints?.clear();

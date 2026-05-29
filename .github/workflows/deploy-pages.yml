@@ -28,6 +28,9 @@ jobs:
       - run: npm ci
 
       - name: Build for GitHub Pages
+        env:
+          GITHUB_PAGES: true
+          VITE_DRAWING_WS_ORIGIN: ${{ vars.VITE_DRAWING_WS_ORIGIN }}
         run: npm run build:pages -w @arena-prototype/web
 
       - uses: actions/upload-pages-artifact@v3

@@ -7,8 +7,9 @@ export function DrawingPage() {
       <header className="drawing-page-header">
         <Link to="/">← Home</Link>
         <p className="muted">
-          TinyBase drawing demo — drag shapes, resize with grips, undo/redo. Click
-          &ldquo;Start sharing&rdquo; to sync with other browsers. Best on desktop.
+          TinyBase drawing demo — drag shapes, resize with grips, undo/redo. Start
+          sharing, then open the link on another device on the same Wi‑Fi (local dev) or
+          anywhere once the WsServer is deployed.
         </p>
       </header>
       <div className="drawing-page-body">
