@@ -2,42 +2,54 @@
 
 TinyBase `WsServerDurableObject` — one room per URL path, e.g. `wss://…workers.dev/<room-id>`.
 
-## Deploy from your machine
+**Worker name:** `arena-drawing-sync` (Free plan requires `new_sqlite_classes` in `wrangler.jsonc`).
+
+## Fix deploy error 10097
+
+This error means Cloudflare Free requires SQLite-backed Durable Objects. It often appears when an older Worker script exists without a valid SQLite migration.
+
+**Option A — GitHub Actions (easiest)**
+
+1. **Actions → Deploy drawing sync Worker → Run workflow**
+2. Check **Delete existing Worker first** (`reset_worker`)
+3. Run
+
+**Option B — From your machine**
 
 ```bash
-npx wrangler login          # once
-npm run deploy:edge           # from repo root
+npx wrangler login
+npm run reset -w @arena-prototype/edge
 ```
 
-Wrangler prints the live URL, e.g. `https://arena-prototype-drawing-sync.<subdomain>.workers.dev`.
+That deletes `arena-drawing-sync` (and you can manually delete the old `arena-prototype-drawing-sync` in the Cloudflare dashboard if it exists), then deploys fresh.
 
-Use the **WebSocket** form for the web app:
+## Deploy (normal)
+
+```bash
+npm run deploy:edge
+```
+
+Wrangler prints:
 
 ```text
-wss://arena-prototype-drawing-sync.<subdomain>.workers.dev/
+https://arena-drawing-sync.<subdomain>.workers.dev
 ```
 
-## Deploy via GitHub Actions
+Set the web app variable to the WebSocket form:
 
-Repo → **Settings → Secrets and variables → Actions**:
+```text
+wss://arena-drawing-sync.<subdomain>.workers.dev/
+```
 
-| Type | Name | Value |
-|------|------|--------|
-| Secret | `CLOUDFLARE_API_TOKEN` | Cloudflare API token (Edit Cloudflare Workers template) |
-| Secret | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard → Workers & Pages → Account ID |
-| Variable | `VITE_DRAWING_WS_ORIGIN` | `wss://arena-prototype-drawing-sync.<subdomain>.workers.dev/` |
+## GitHub secrets
 
-Then **Actions → Deploy drawing sync Worker → Run workflow**.
+| Type | Name |
+|------|------|
+| Secret | `CLOUDFLARE_API_TOKEN` |
+| Secret | `CLOUDFLARE_ACCOUNT_ID` |
+| Variable | `VITE_DRAWING_WS_ORIGIN` |
 
-After the Worker is live, re-run **Deploy to GitHub Pages** so the drawing page picks up `VITE_DRAWING_WS_ORIGIN`.
-
-## Common failures (exit code 1)
-
-**`CLOUDFLARE_API_TOKEN environment variable`** — Token or Account ID secret missing/wrong in GitHub, or run `wrangler login` locally.
-
-**Durable Object / SQLite / migration errors** — Free Workers plans require `new_sqlite_classes` in `wrangler.toml` (not `new_classes`). This repo uses SQLite-backed DOs.
-
-**Authentication / permission errors** — Recreate the API token with the **Edit Cloudflare Workers** template scoped to your account.
+After deploy, re-run **Deploy to GitHub Pages**.
 
 ## Local dev
 

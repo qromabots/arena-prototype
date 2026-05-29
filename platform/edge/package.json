@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "delete": "wrangler delete arena-drawing-sync",
+    "reset": "wrangler delete arena-drawing-sync --force && wrangler deploy",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
