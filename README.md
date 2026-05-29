@@ -15,4 +15,4 @@
 **Deploy:** static SPA to **GitHub Pages** (from milestone M1 onward). A Cloudflare Worker is needed only for the `do` transport; Trystero arenas need no backend.
 
 See [the infrastructure plan](./plan-archives/INITIAL-PLAN.md) for full detail.
-https://qromabots.github.io/arena-prototype/drawing?room=Uzl08SzgKlTI6l9X
+can you add this link to the readme doc? https://qromabots.github.io/arena-prototype/welcome
