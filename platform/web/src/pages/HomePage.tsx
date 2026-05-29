@@ -23,6 +23,8 @@ export function HomePage() {
       </section>
       <p>
         <Link to="/settings">Settings</Link>
+        {' · '}
+        <Link to="/drawing">Drawing demo</Link>
       </p>
     </Layout>
   );

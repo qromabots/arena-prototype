@@ -12,6 +12,7 @@ import { getLocalStore } from '@/sync/LocalStore';
 import { WelcomePage } from '@/pages/WelcomePage';
 import { HomePage } from '@/pages/HomePage';
 import { SettingsPage } from '@/pages/SettingsPage';
+import { DrawingPage } from '@/pages/DrawingPage';
 
 async function requireIdentity(): Promise<PlayerIdentity> {
   const local = await getLocalStore();
@@ -47,10 +48,18 @@ const settingsRoute = createRoute({
   component: SettingsPage,
 });
 
+const drawingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/drawing',
+  beforeLoad: async () => ({ identity: await requireIdentity() }),
+  component: DrawingPage,
+});
+
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
   indexRoute,
   settingsRoute,
+  drawingRoute,
 ]);
 
 function RootLayout() {
