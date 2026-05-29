@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "concurrently -n web,sync -c blue,green \"npm run dev -w @arena-prototype/web\" \"npm run dev:sync\"",
     "dev:web": "npm run dev -w @arena-prototype/web",
-    "dev:sync": "npm run start -w @arena-prototype/drawing-sync",
+    "dev:sync": "npm run dev -w @arena-prototype/edge",
+    "deploy:edge": "npm run deploy -w @arena-prototype/edge",
     "build": "npm run build -w @arena-prototype/web",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },

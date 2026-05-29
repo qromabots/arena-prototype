@@ -48,7 +48,7 @@ export function DrawingSyncBar({ roomId, onStartSharing }: Props) {
             </button>
           ) : (
             <span className="drawing-sync-hint muted">
-              Deploy the drawing WsServer and set VITE_DRAWING_WS_ORIGIN to enable sync
+              Deploy the Cloudflare Worker (platform/edge) and set VITE_DRAWING_WS_ORIGIN
             </span>
           )}
         </>
