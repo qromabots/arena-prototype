@@ -1,3 +1,4 @@
+import type { GamepadSnapshot } from '@/hooks/useGamepad';
 import { useGamepad } from '@/hooks/useGamepad';
 
 const STICK_TRAVEL = 14;
@@ -50,11 +51,16 @@ function isPressed(buttons: { pressed: boolean }[] | undefined, index: number): 
   return buttons?.[index]?.pressed ?? false;
 }
 
-export function GamepadVisual() {
-  const gamepad = useGamepad(0);
+type PanelProps = {
+  title: string;
+  subtitle?: string;
+  snapshot: GamepadSnapshot | null;
+  emptyHint: string;
+};
 
-  const axes = gamepad?.axes ?? [];
-  const buttons = gamepad?.buttons;
+export function GamepadVisualPanel({ title, subtitle, snapshot, emptyHint }: PanelProps) {
+  const axes = snapshot?.axes ?? [];
+  const buttons = snapshot?.buttons;
 
   const leftX = axes[0] ?? 0;
   const leftY = axes[1] ?? 0;
@@ -65,21 +71,18 @@ export function GamepadVisual() {
   const r2 = triggerValue(buttons, 7);
 
   return (
-    <section className="card gamepad-panel" aria-label="Game controller">
-      <h2>Controller</h2>
-      {!gamepad ? (
-        <p className="muted gamepad-hint">
-          Plug in a USB or Bluetooth gamepad, then press any button so the browser can
-          detect it.
-        </p>
+    <section className="card gamepad-panel" aria-label={`${title} game controller`}>
+      <h2>{title}</h2>
+      {!snapshot ? (
+        <p className="muted gamepad-hint">{emptyHint}</p>
       ) : (
         <>
-          <p className="gamepad-id muted">{gamepad.id}</p>
+          {subtitle ? <p className="gamepad-id muted">{subtitle}</p> : null}
           <svg
             className="gamepad-visual"
             viewBox="0 0 360 200"
             role="img"
-            aria-label="Live gamepad input"
+            aria-label={`${title} live gamepad input`}
           >
             <rect className="gamepad-body" x="20" y="50" width="320" height="120" rx="36" />
 
@@ -116,10 +119,7 @@ export function GamepadVisual() {
             <Stick cx={110} cy={120} x={leftX} y={leftY} />
             <Stick cx={250} cy={120} x={rightX} y={rightY} />
 
-            <g
-              className="gamepad-dpad"
-              aria-label="D-pad"
-            >
+            <g className="gamepad-dpad" aria-label="D-pad">
               <rect
                 className={isPressed(buttons, 12) ? 'pressed' : ''}
                 x="48"
@@ -175,5 +175,19 @@ export function GamepadVisual() {
         </>
       )}
     </section>
+  );
+}
+
+/** Standalone local-only controller panel (no TinyBase sync). */
+export function GamepadVisual() {
+  const gamepad = useGamepad(0);
+
+  return (
+    <GamepadVisualPanel
+      title="Controller"
+      subtitle={gamepad?.id}
+      snapshot={gamepad}
+      emptyHint="Plug in a USB or Bluetooth gamepad, then press any button so the browser can detect it."
+    />
   );
 }

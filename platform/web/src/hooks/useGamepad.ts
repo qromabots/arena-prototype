@@ -22,7 +22,7 @@ function applyDeadzone(value: number): number {
   return sign * ((abs - DEADZONE) / (1 - DEADZONE));
 }
 
-function readGamepad(index: number): GamepadSnapshot | null {
+export function readGamepad(index: number): GamepadSnapshot | null {
   const pads = navigator.getGamepads?.();
   if (!pads) return null;
 

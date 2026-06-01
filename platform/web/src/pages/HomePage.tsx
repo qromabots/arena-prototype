@@ -1,5 +1,7 @@
-import { GamepadVisual } from '@/components/gamepad/GamepadVisual';
 import { Layout } from '@/components/Layout';
+import { GamepadSyncApp } from '@/gamepad/GamepadSyncApp';
+import { GamepadSyncBar } from '@/gamepad/GamepadSyncBar';
+import { SyncedGamepadPanels } from '@/gamepad/SyncedGamepadPanels';
 import { getRouteApi, Link } from '@tanstack/react-router';
 
 const route = getRouteApi('/');
@@ -16,7 +18,10 @@ export function HomePage() {
         Poop Arena creation and joining arrive in the next milestone. Your identity is
         ready on this device.
       </p>
-      <GamepadVisual />
+      <GamepadSyncApp identity={identity}>
+        <GamepadSyncBar />
+        <SyncedGamepadPanels playerId={identity.playerId} />
+      </GamepadSyncApp>
       <section className="card">
         <h2>Your player id</h2>
         <code className="mono">{identity.playerId}</code>

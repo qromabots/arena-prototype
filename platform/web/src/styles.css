@@ -135,6 +135,64 @@ a {
   place-items: center;
 }
 
+.gamepad-sync {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.gamepad-sync-status {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.gamepad-sync-hint {
+  font-size: 0.8rem;
+}
+
+.gamepad-sync .gamepad-sync-hint:not(:last-child) {
+  flex: 1 1 12rem;
+}
+
+.gamepad-sync-button {
+  cursor: pointer;
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: inherit;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.gamepad-sync-button:hover {
+  border-color: var(--accent);
+}
+
+.gamepad-sync-button.primary {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+}
+
+.gamepad-panels {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+
+.gamepad-remote-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
 .gamepad-panel h2 {
   margin-bottom: 0.25rem;
 }
