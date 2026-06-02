@@ -3,29 +3,36 @@ import { useStore } from 'tinybase/ui-react';
 import type { Handle, PlayerId } from '@arena-prototype/shared-types';
 import { readGamepad } from '@/hooks/useGamepad';
 import { CONTROLLERS } from './constants';
-import { controllerRowFromSnapshot } from './gamepadRows';
+import {
+  controllerRowFromSnapshot,
+  disconnectedControllerRow,
+} from './gamepadRows';
 
-export function usePublishLocalGamepad(playerId: PlayerId, handle: Handle) {
+export function usePublishLocalGamepad(
+  playerId: PlayerId,
+  handle: Handle,
+  roomId: string,
+) {
   const store = useStore();
 
   useEffect(() => {
-    if (!store) return;
+    if (!store || !roomId) return;
 
     let frame = 0;
 
     const tick = () => {
       const gamepad = readGamepad(0);
-      if (gamepad) {
-        store.setRow(CONTROLLERS, playerId, controllerRowFromSnapshot(handle, gamepad));
-      } else if (store.hasRow(CONTROLLERS, playerId)) {
-        store.setPartialRow(CONTROLLERS, playerId, {
-          connected: false,
-          updatedAt: Date.now(),
-        });
-      }
+      store.setRow(
+        CONTROLLERS,
+        playerId,
+        gamepad
+          ? controllerRowFromSnapshot(handle, gamepad)
+          : disconnectedControllerRow(handle),
+      );
       frame = requestAnimationFrame(tick);
     };
 
+    store.setRow(CONTROLLERS, playerId, disconnectedControllerRow(handle));
     frame = requestAnimationFrame(tick);
 
     return () => {
@@ -34,5 +41,5 @@ export function usePublishLocalGamepad(playerId: PlayerId, handle: Handle) {
         store.delRow(CONTROLLERS, playerId);
       }
     };
-  }, [store, playerId, handle]);
+  }, [store, playerId, handle, roomId]);
 }

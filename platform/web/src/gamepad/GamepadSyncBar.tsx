@@ -22,8 +22,8 @@ export function GamepadSyncBar() {
         <>
           <span className="gamepad-sync-status">Syncing room {roomId}</span>
           <span className="gamepad-sync-hint muted">
-            Open the share link in another browser — each participant&apos;s controller
-            appears here
+            Open the share link in another browser — each participant appears here with
+            their controller, or &quot;No controller connected&quot; if none is plugged in
           </span>
           <button type="button" className="gamepad-sync-button" onClick={handleCopy}>
             {copied ? 'Copied!' : 'Copy share link'}

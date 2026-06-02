@@ -10,6 +10,17 @@ export type ControllerRow = {
   updatedAt: number;
 };
 
+export function disconnectedControllerRow(handle: string): ControllerRow {
+  return {
+    handle,
+    connected: false,
+    padId: '',
+    axes: '[]',
+    buttons: '[]',
+    updatedAt: Date.now(),
+  };
+}
+
 export function controllerRowFromSnapshot(
   handle: string,
   snapshot: GamepadSnapshot,
