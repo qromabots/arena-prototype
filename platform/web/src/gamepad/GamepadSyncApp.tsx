@@ -55,7 +55,7 @@ type Props = {
 
 function GamepadSyncInner({ identity, children }: Props) {
   const { roomId } = useGamepadSync();
-  usePublishLocalGamepad(identity.playerId, identity.handle, roomId);
+  usePublishLocalGamepad(identity.playerId, identity.handle, Boolean(roomId));
   return children;
 }
 

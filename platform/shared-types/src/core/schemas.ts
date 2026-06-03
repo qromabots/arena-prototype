@@ -87,6 +87,18 @@ export const zIntent = z.object({
 });
 export type Intent = z.infer<typeof zIntent>;
 
+export const zRobot = z.object({
+  handle: zHandle,
+  avatarColor: z.string().min(1),
+  x: z.number(),
+  y: z.number(),
+  angle: z.number(),
+  vx: z.number(),
+  vy: z.number(),
+  updatedAt: z.number(),
+});
+export type Robot = z.infer<typeof zRobot>;
+
 export const zPreferences = z.object({
   soundEnabled: z.boolean().default(true),
   theme: z.string().min(1).default('system'),

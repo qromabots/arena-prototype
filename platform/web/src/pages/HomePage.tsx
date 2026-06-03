@@ -15,8 +15,10 @@ export function HomePage() {
         Welcome, <strong>{identity.handle}</strong>.
       </p>
       <p className="muted">
-        Poop Arena creation and joining arrive in the next milestone. Your identity is
-        ready on this device.
+        Create an arena, share the link, and drive your virtual robot alongside others.
+      </p>
+      <p>
+        <Link to="/arena">Open robot arena</Link>
       </p>
       <GamepadSyncApp identity={identity}>
         <GamepadSyncBar />

@@ -11,12 +11,12 @@ import {
 export function usePublishLocalGamepad(
   playerId: PlayerId,
   handle: Handle,
-  roomId: string,
+  enabled = true,
 ) {
   const store = useStore();
 
   useEffect(() => {
-    if (!store || !roomId) return;
+    if (!store || !enabled) return;
 
     let frame = 0;
 
@@ -41,5 +41,5 @@ export function usePublishLocalGamepad(
         store.delRow(CONTROLLERS, playerId);
       }
     };
-  }, [store, playerId, handle, roomId]);
+  }, [store, playerId, handle, enabled]);
 }
