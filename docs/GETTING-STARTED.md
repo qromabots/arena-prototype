@@ -140,9 +140,11 @@ dependency list changes (for example, after pulling in someone else's updates).
 > **Note:** `node_modules/` is intentionally *not* committed to Git — the `.gitignore`
 > file excludes it. That's expected; everyone regenerates it with `npm install`.
 
-This repo is an npm **workspace**: the actual app lives in `platform/web` and shared code
-in `platform/shared-types`. Running `npm install` once at the top level installs
-dependencies for all of them — you don't install them separately.
+This repo is an npm **workspace** with three parts under `platform/`: the web app
+(`platform/web`), the Cloudflare sync worker that real-time state flows through
+(`platform/edge`), and shared TypeScript types used by both (`platform/shared-types`).
+Running `npm install` once at the top level installs dependencies for all of them — you
+don't install them separately.
 
 ---
 
@@ -154,16 +156,24 @@ Start the local development server from the top-level project folder:
 npm run dev
 ```
 
-This builds the app and serves it locally. The terminal will print a URL such as
-`http://localhost:5173` — open it in your browser to see the app. As you edit files, the
-page reloads automatically.
+This starts **two** processes at once (their output is labelled `web` and `sync`): the
+web app via Vite, and the Cloudflare sync worker (`platform/edge`) via Wrangler. The
+terminal will print a URL such as `http://localhost:5173` for the web app — open it in
+your browser. As you edit files, the page reloads automatically.
 
-Press `Ctrl + C` in the terminal to stop the server.
+Press `Ctrl + C` in the terminal to stop both.
 
-Two other useful commands:
+If you want to run just one side, there are separate scripts:
 
 ```
-npm run typecheck   # checks the code for type errors without running it
+npm run dev:web    # web app only (Vite)
+npm run dev:sync   # sync worker only (Wrangler)
+```
+
+Other useful commands:
+
+```
+npm run typecheck   # checks every workspace for type errors without running it
 npm run build       # produces a production build in platform/web/dist
 ```
 
@@ -236,5 +246,7 @@ the repo's host so others can review the change before it joins `main`.
 
 - `README.md` — what the project is and how it's architected.
 - `plan-archives/INITIAL-PLAN.md` — the full infrastructure plan.
+- `docs/` — `TODOs.md` (planned chunks of work) and `STORES-AND-ECHOES.md`.
 - `platform/web/src/` — the app's source code (pages, components, router).
+- `platform/edge/` — the Cloudflare sync worker (Durable Object transport).
 - `platform/shared-types/src/` — shared TypeScript types used across the project.
