@@ -15,6 +15,15 @@ export function getDrawingWsUrl(roomId: string): string {
   return `${getDrawingWsOrigin()}${encodeURIComponent(roomId)}`;
 }
 
+export function getSyncHttpOrigin(): string {
+  const wsOrigin = getDrawingWsOrigin().replace(/\/$/, '');
+  return wsOrigin.replace(/^wss:/i, 'https:').replace(/^ws:/i, 'http:');
+}
+
+export function getDoUsageUrl(): string {
+  return `${getSyncHttpOrigin()}/usage`;
+}
+
 /** True when sync can run (Cloudflare Worker URL set, or local wrangler dev over HTTP). */
 export function isDrawingSyncAvailable(): boolean {
   if (import.meta.env.VITE_DRAWING_WS_ORIGIN) return true;

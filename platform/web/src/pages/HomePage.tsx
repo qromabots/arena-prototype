@@ -19,6 +19,8 @@ export function HomePage() {
       </p>
       <p>
         <Link to="/arena">Open robot arena</Link>
+        {' · '}
+        <Link to="/usage">DO usage</Link>
       </p>
       <GamepadSyncApp identity={identity}>
         <GamepadSyncBar />

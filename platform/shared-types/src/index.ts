@@ -5,3 +5,5 @@ export * from './core/schemas.js';
 export * from './core/store.js';
 export * from './core/store-ownership.js';
 export * from './core/identity.js';
+export * from './core/doLimits.js';
+export * from './core/syncRates.js';

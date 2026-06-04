@@ -7,6 +7,7 @@ import {
   ROBOT_RADIUS,
   ROBOTS,
 } from './constants';
+import { useLocalRobotRef } from './LocalRobotRefContext';
 import { readRobotRow } from './robotRows';
 
 type Props = {
@@ -52,6 +53,7 @@ function drawRobot(
 export function ArenaCanvas({ playerId }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const store = useStore();
+  const localRobotRef = useLocalRobotRef();
   const robotIds = useRowIds(ROBOTS) ?? [];
 
   useEffect(() => {
@@ -91,8 +93,12 @@ export function ArenaCanvas({ playerId }: Props) {
 
       const ids = store.getRowIds(ROBOTS) ?? [];
       for (const id of ids) {
-        const robot = readRobotRow(store.getRow(ROBOTS, id));
-        if (!robot) continue;
+        const stored = readRobotRow(store.getRow(ROBOTS, id));
+        if (!stored) continue;
+        const robot =
+          id === playerId && localRobotRef.current
+            ? { ...stored, ...localRobotRef.current }
+            : stored;
         drawRobot(
           ctx,
           robot.x,
@@ -109,7 +115,7 @@ export function ArenaCanvas({ playerId }: Props) {
 
     frame = requestAnimationFrame(render);
     return () => cancelAnimationFrame(frame);
-  }, [store, playerId, robotIds]);
+  }, [store, playerId, robotIds, localRobotRef]);
 
   return (
     <canvas

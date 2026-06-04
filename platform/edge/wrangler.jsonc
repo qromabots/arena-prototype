@@ -8,6 +8,10 @@
       {
         "name": "DRAWING_ROOMS",
         "class_name": "DrawingRoomDurableObject"
+      },
+      {
+        "name": "USAGE",
+        "class_name": "UsageDurableObject"
       }
     ]
   },
@@ -15,6 +19,10 @@
     {
       "tag": "v1",
       "new_sqlite_classes": ["DrawingRoomDurableObject"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["UsageDurableObject"]
     }
   ],
   "dev": {

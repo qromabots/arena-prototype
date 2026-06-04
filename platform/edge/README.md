@@ -56,3 +56,9 @@ After deploy, re-run **Deploy to GitHub Pages**.
 ```bash
 npm run dev    # Vite + wrangler dev on port 8043
 ```
+
+## Usage API
+
+`GET /usage` returns estimated Durable Object consumption for the Free-tier dashboard in the web app (`/usage`). Room DOs batch metrics into a global `UsageDurableObject` every 10 seconds.
+
+After pulling the `v2` SQLite migration (`UsageDurableObject`), run a normal deploy or `npm run reset -w @arena-prototype/edge` if Cloudflare rejects the new class.

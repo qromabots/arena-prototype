@@ -14,9 +14,8 @@ import {
   useCreateSynchronizer,
 } from 'tinybase/ui-react';
 import { getDrawingWsUrl } from '@/drawing/drawingSync';
-import { CONTROLLERS } from '@/gamepad/constants';
-import { usePublishLocalGamepad } from '@/gamepad/usePublishLocalGamepad';
 import { ARENA, PLAYERS, ROBOTS } from './constants';
+import { LocalRobotRefProvider } from './LocalRobotRefContext';
 import { useArenaRoomId } from './useArenaRoomId';
 import { useJoinArena } from './useJoinArena';
 import { useDriveLocalRobot } from './useDriveLocalRobot';
@@ -48,14 +47,6 @@ function createArenaStore() {
       vy: { type: 'number', default: 0 },
       updatedAt: { type: 'number', default: 0 },
     },
-    [CONTROLLERS]: {
-      handle: { type: 'string', default: '' },
-      connected: { type: 'boolean', default: false },
-      padId: { type: 'string', default: '' },
-      axes: { type: 'string', default: '[]' },
-      buttons: { type: 'string', default: '[]' },
-      updatedAt: { type: 'number', default: 0 },
-    },
   });
 }
 
@@ -82,7 +73,6 @@ type Props = {
 function ArenaSyncInner({ identity, children }: Props) {
   const { roomId } = useArenaSync();
   useJoinArena(identity, roomId);
-  usePublishLocalGamepad(identity.playerId, identity.handle);
   useDriveLocalRobot(identity.playerId);
   return children;
 }
@@ -123,7 +113,9 @@ export function ArenaSyncApp({ identity, children }: Props) {
   return (
     <Provider store={store} checkpoints={checkpoints}>
       <ArenaSyncContext.Provider value={{ roomId, createRoom }}>
-        <ArenaSyncInner identity={identity}>{children}</ArenaSyncInner>
+        <LocalRobotRefProvider>
+          <ArenaSyncInner identity={identity}>{children}</ArenaSyncInner>
+        </LocalRobotRefProvider>
       </ArenaSyncContext.Provider>
     </Provider>
   );

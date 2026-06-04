@@ -14,6 +14,7 @@ import { HomePage } from '@/pages/HomePage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { DrawingPage } from '@/pages/DrawingPage';
 import { ArenaPage } from '@/pages/ArenaPage';
+import { UsagePage } from '@/pages/UsagePage';
 
 async function requireIdentity(): Promise<PlayerIdentity> {
   const local = await getLocalStore();
@@ -63,12 +64,20 @@ const arenaRoute = createRoute({
   component: ArenaPage,
 });
 
+const usageRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/usage',
+  beforeLoad: async () => ({ identity: await requireIdentity() }),
+  component: UsagePage,
+});
+
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
   indexRoute,
   settingsRoute,
   drawingRoute,
   arenaRoute,
+  usageRoute,
 ]);
 
 function RootLayout() {

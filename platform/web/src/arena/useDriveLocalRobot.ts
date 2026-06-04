@@ -2,6 +2,11 @@ import { useEffect, useRef } from 'react';
 import { useStore } from 'tinybase/ui-react';
 import type { PlayerId } from '@arena-prototype/shared-types';
 import {
+  ROBOT_ANGLE_EPSILON,
+  ROBOT_POSITION_EPSILON,
+  SYNC_PUBLISH_INTERVAL_MS,
+} from '@arena-prototype/shared-types';
+import {
   ARENA_HEIGHT,
   ARENA_WIDTH,
   ROBOT_ACCEL,
@@ -11,7 +16,8 @@ import {
   ROBOTS,
 } from './constants';
 import { readDriveInput } from './driveInput';
-import { readRobotRow } from './robotRows';
+import { useLocalRobotRef } from './LocalRobotRefContext';
+import { readRobotRow, type RobotRow } from './robotRows';
 
 const KEY_MAP: Record<string, true> = {
   ArrowUp: true,
@@ -35,6 +41,9 @@ function clamp(value: number, min: number, max: number): number {
 export function useDriveLocalRobot(playerId: PlayerId) {
   const store = useStore();
   const keysRef = useRef(new Set<string>());
+  const localRobotRef = useLocalRobotRef();
+  const physicsRef = useRef<RobotRow | null>(null);
+  const lastPublishedRef = useRef<Partial<RobotRow>>({});
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -69,6 +78,13 @@ export function useDriveLocalRobot(playerId: PlayerId) {
   useEffect(() => {
     if (!store) return;
 
+    const row = readRobotRow(store.getRow(ROBOTS, playerId));
+    if (row) {
+      physicsRef.current = { ...row };
+      lastPublishedRef.current = { ...row };
+      localRobotRef.current = { x: row.x, y: row.y, angle: row.angle };
+    }
+
     let frame = 0;
     let lastTime = performance.now();
 
@@ -76,7 +92,7 @@ export function useDriveLocalRobot(playerId: PlayerId) {
       const dt = Math.min((now - lastTime) / 16.67, 2);
       lastTime = now;
 
-      const row = readRobotRow(store.getRow(ROBOTS, playerId));
+      const row = physicsRef.current;
       if (!row) {
         frame = requestAnimationFrame(tick);
         return;
@@ -130,15 +146,15 @@ export function useDriveLocalRobot(playerId: PlayerId) {
       vx = clamp(vx, -ROBOT_MAX_SPEED, ROBOT_MAX_SPEED);
       vy = clamp(vy, -ROBOT_MAX_SPEED, ROBOT_MAX_SPEED);
 
-      store.setRow(ROBOTS, playerId, {
+      physicsRef.current = {
         ...row,
         x,
         y,
         angle,
         vx,
         vy,
-        updatedAt: Date.now(),
-      });
+      };
+      localRobotRef.current = { x, y, angle };
 
       frame = requestAnimationFrame(tick);
     };
@@ -147,6 +163,53 @@ export function useDriveLocalRobot(playerId: PlayerId) {
 
     return () => {
       cancelAnimationFrame(frame);
+    };
+  }, [store, playerId, localRobotRef]);
+
+  useEffect(() => {
+    if (!store) return;
+
+    const publish = () => {
+      const row = physicsRef.current;
+      if (!row) return;
+
+      const updatedAt = Date.now();
+      const prev = lastPublishedRef.current;
+      const partial: Partial<RobotRow> = {};
+      let changed = false;
+
+      for (const field of ['x', 'y', 'vx', 'vy'] as const) {
+        const value = row[field];
+        const previous = prev[field];
+        if (
+          previous === undefined ||
+          Math.abs(value - previous) > ROBOT_POSITION_EPSILON
+        ) {
+          partial[field] = value;
+          changed = true;
+        }
+      }
+
+      if (
+        prev.angle === undefined ||
+        Math.abs(row.angle - prev.angle) > ROBOT_ANGLE_EPSILON
+      ) {
+        partial.angle = row.angle;
+        changed = true;
+      }
+
+      if (!changed) return;
+
+      partial.updatedAt = updatedAt;
+      store.setPartialRow(ROBOTS, playerId, partial);
+      lastPublishedRef.current = { ...prev, ...partial };
+    };
+
+    publish();
+    const interval = window.setInterval(publish, SYNC_PUBLISH_INTERVAL_MS);
+
+    return () => {
+      window.clearInterval(interval);
     };
   }, [store, playerId]);
 }

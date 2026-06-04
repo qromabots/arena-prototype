@@ -314,3 +314,88 @@ kbd {
   border-radius: 4px;
   background: var(--surface);
 }
+
+.usage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin: 1.25rem 0;
+}
+
+.usage-endpoint {
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+.usage-error {
+  color: var(--error);
+}
+
+.usage-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.usage-meter-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.usage-meter-track {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.usage-meter-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.usage-meter-fill-warn {
+  background: #f59e0b;
+}
+
+.usage-meter-foot {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+}
+
+.usage-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.75rem 1rem;
+  margin: 0;
+}
+
+.usage-stats div {
+  margin: 0;
+}
+
+.usage-stats dt {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.usage-stats dd {
+  margin: 0.15rem 0 0;
+  font-size: 1rem;
+}
+
+.usage-list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.usage-list li + li {
+  margin-top: 0.35rem;
+}

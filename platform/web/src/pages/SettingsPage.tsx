@@ -22,6 +22,8 @@ export function SettingsPage() {
       </p>
       <p>
         <Link to="/">Back to home</Link>
+        {' · '}
+        <Link to="/usage">DO usage</Link>
       </p>
     </Layout>
   );
