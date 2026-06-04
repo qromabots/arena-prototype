@@ -7,15 +7,6 @@ meant to be independently demoable, in the spirit of the milestones in
 `plan-archives/INITIAL-PLAN.md`.
 
 ## TODO Next
-
-- [ ] **Cut down Durable Object traffic.** Reduce the volume of messages/bytes hitting
-  the DO: coalesce per-frame writes, only publish changed fields, batch updates, and
-  consider a server-side tick that fans out at a fixed rate instead of on every client
-  publish. Goal is lower DO request/duration cost and headroom under the Free plan
-  limits. Overlaps with the input rate pass but is framed around backend cost, not feel.
-
-  Also, implement a button where a page where the user can see how much usage has 
-  occurred and how much remains.
 - [ ] **Sized arena with persistent smoke trails + reset.** One chunk:
   - On arena setup, force the host to set the arena dimensions before proceeding — no
     defaulting past it. Software validates the input (positive numbers, sane min/max,
