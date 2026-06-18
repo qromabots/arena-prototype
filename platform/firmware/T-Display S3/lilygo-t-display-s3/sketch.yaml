@@ -1,0 +1,8 @@
+profiles:
+  default:
+    name: LilyGO T-Display S3
+    fqbn: esp32:esp32:esp32s3:CDCOnBoot=cdc,FlashMode=qio,FlashSize=16M,PartitionScheme=default,PSRAM=opi,UploadSpeed=921600
+    platforms:
+      - platform: esp32:esp32 (>=2.0.0)
+    libraries:
+      - GFX Library for Arduino (>=1.4.9)
