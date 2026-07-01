@@ -47,7 +47,7 @@ void setup() {
   do {
     display.fillScreen(GxEPD_WHITE);
     display.setCursor(10, 20);
-    display.print("Placeholder Text"); // Change Text Here
+    display.print("T5: Placeholder Text"); // Change Text Here
 
     if (SD.cardType() != CARD_NONE) {
       display.setCursor(10, 60);

@@ -49,7 +49,7 @@ void setup() {
   gfx->setTextSize(2);
   gfx->setTextColor(RGB565_WHITE);
   gfx->setCursor(10, 20);
-  gfx->println("Placeholder Text"); // Change Text Here
+  gfx->println("S3: Placeholder Text"); // Change Text Here
 
   Serial.println("Display initialized.");
 }

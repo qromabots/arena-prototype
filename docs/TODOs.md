@@ -7,6 +7,18 @@ meant to be independently demoable, in the spirit of the milestones in
 `plan-archives/INITIAL-PLAN.md`.
 
 ## TODO Next
+- [ ] **Update board text from a browser over WebSerial.** The LilyGo hello sketches
+  (S3 LCD + T5 e-ink) render a hardcoded string once in `setup()` and never read input —
+  today the only way to change the message is to re-flash. Build the live round-trip:
+  - **Firmware:** add a serial reader in `loop()` that accumulates bytes until `\n`, then
+    re-renders the display with the received text. Start with the **T-Display S3** (fast
+    LCD redraw, native USB CDC so `Serial` is the USB port); then port the same protocol
+    to the **T5 e-ink** (full/partial refresh, ~1–2s, watch the flashing).
+  - **Browser:** a minimal standalone page — `navigator.serial.requestPort()` → open at
+    115200 → textbox + Send that writes `text + "\n"`.
+  - Test the browser→board round-trip standalone before folding into the arena app.
+  This is step 2 of the "LilyGo dev boards over WebSerial" thread below.
+
 - [ ] **Sized arena with persistent smoke trails + reset.** One chunk:
   - On arena setup, force the host to set the arena dimensions before proceeding — no
     defaulting past it. Software validates the input (positive numbers, sane min/max,

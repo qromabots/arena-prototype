@@ -53,6 +53,22 @@ If two COM ports appear, use the **USB CDC** port for the monitor.
 
 ## PlatformIO
 
+### Install (Python venv)
+
+Install the `pio` CLI into a local virtualenv (`.venv-platformio/` at the repo root) so it stays off the system Python. From the repo root:
+
+```bash
+python3 -m venv .venv-platformio
+source .venv-platformio/bin/activate
+pip install --upgrade pip
+pip install platformio
+pio --version
+```
+
+Re-activate with `source .venv-platformio/bin/activate` in each new shell; `deactivate` to leave. The venv auto-writes its own `.gitignore` so it isn't committed. Toolchains, the esp32 platform, and libraries download to `~/.platformio/` (shared, independent of the venv).
+
+### Build, upload, monitor
+
 From the `T-Display S3` folder (parent of the sketch):
 
 ```bash
