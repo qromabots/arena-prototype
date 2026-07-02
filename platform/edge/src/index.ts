@@ -4,7 +4,6 @@ import {
   WsServerDurableObject,
   getWsServerDurableObjectFetch,
 } from 'tinybase/synchronizers/synchronizer-ws-server-durable-object';
-import { SYNC_PUBLISH_INTERVAL_MS } from '@arena-prototype/shared-types';
 import {
   loadDailyUsage,
   mergeUsage,
@@ -164,5 +163,3 @@ export default {
     return wsFetch(request, env);
   },
 };
-
-export { SYNC_PUBLISH_INTERVAL_MS };
