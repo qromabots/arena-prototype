@@ -15,6 +15,7 @@ import { SettingsPage } from '@/pages/SettingsPage';
 import { DrawingPage } from '@/pages/DrawingPage';
 import { ArenaPage } from '@/pages/ArenaPage';
 import { UsagePage } from '@/pages/UsagePage';
+import { LilyGoPage } from '@/pages/LilyGoPage';
 
 async function requireIdentity(): Promise<PlayerIdentity> {
   const local = await getLocalStore();
@@ -71,6 +72,12 @@ const usageRoute = createRoute({
   component: UsagePage,
 });
 
+const lilyGoRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/lilygo',
+  component: LilyGoPage,
+});
+
 const routeTree = rootRoute.addChildren([
   welcomeRoute,
   indexRoute,
@@ -78,6 +85,7 @@ const routeTree = rootRoute.addChildren([
   drawingRoute,
   arenaRoute,
   usageRoute,
+  lilyGoRoute,
 ]);
 
 function RootLayout() {

@@ -34,6 +34,8 @@ export function HomePage() {
         <Link to="/settings">Settings</Link>
         {' · '}
         <Link to="/drawing">Drawing demo</Link>
+        {' · '}
+        <Link to="/lilygo">LilyGO boards</Link>
       </p>
     </Layout>
   );

@@ -15,16 +15,60 @@
 #define SD_MISO   2
 #define SD_SCLK   14
 
+#define MAX_TEXT_LEN 80
+#define SET_PREFIX "SET "
+
 // Select your exact 2.13" E-paper driver class (SSD1680 is standard for modern T5 2.13 boards)
 GxEPD2_BW<GxEPD2_213_GDEY0213B74, GxEPD2_213_GDEY0213B74::HEIGHT> display(GxEPD2_213_GDEY0213B74(EPD_CS, EPD_DC, EPD_RST, EPD_BUSY));
 // Note: If your screen variant shows distorted lines, try changing 'GxEPD2_213_GDEY0213B74' to 'GxEPD2_213_BN'
 
 SPIClass sdSPI(VSPI);
 
+String displayText = "T5: Placeholder Text";
+String lineBuffer;
+
+void renderDisplay() {
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+    display.setCursor(10, 20);
+    display.print(displayText);
+
+    if (SD.cardType() != CARD_NONE) {
+      display.setCursor(10, 60);
+      display.print("TF Card detected.");
+    }
+  } while (display.nextPage());
+
+  display.powerOff();
+}
+
+void processLine(const String &line) {
+  if (!line.startsWith(SET_PREFIX)) {
+    Serial.println("ERR unknown");
+    return;
+  }
+
+  const String nextText = line.substring(strlen(SET_PREFIX));
+  if (nextText.length() == 0) {
+    Serial.println("ERR empty");
+    return;
+  }
+  if (nextText.length() > MAX_TEXT_LEN) {
+    Serial.println("ERR toolong");
+    return;
+  }
+
+  displayText = nextText;
+  renderDisplay();
+  Serial.println("OK");
+}
+
 void setup() {
   Serial.begin(115200);
   delay(1000);
   Serial.println("\n--- LilyGO T5 2.13 Setup Starting ---");
+  Serial.println("HELLO T5-2.13");
 
   // 1. Initialize TF Card via its dedicated SPI Pins
   sdSPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
@@ -42,23 +86,25 @@ void setup() {
   display.setTextColor(GxEPD_BLACK);
   display.setFont(NULL); // Uses standard built-in system font
 
-  // 3. Draw content using Full Refresh loop (standard pattern for GxEPD2)
-  display.firstPage();
-  do {
-    display.fillScreen(GxEPD_WHITE);
-    display.setCursor(10, 20);
-    display.print("T5: Placeholder Text"); // Change Text Here
-
-    if (SD.cardType() != CARD_NONE) {
-      display.setCursor(10, 60);
-      display.print("TF Card detected.");
-    }
-  } while (display.nextPage());
-
-  Serial.println("Display refresh complete. Going to sleep mode to conserve power.");
-  display.powerOff(); // Powers down display hardware safely
+  renderDisplay();
+  Serial.println("Display refresh complete. Waiting for WebSerial commands.");
 }
 
 void loop() {
-  // Put repetitive tasks here, or use ESP32 Deep Sleep
+  while (Serial.available()) {
+    const char c = Serial.read();
+    if (c == '\n' || c == '\r') {
+      if (lineBuffer.length() > 0) {
+        processLine(lineBuffer);
+        lineBuffer = "";
+      }
+      continue;
+    }
+
+    lineBuffer += c;
+    if (lineBuffer.length() > MAX_TEXT_LEN + strlen(SET_PREFIX)) {
+      lineBuffer = "";
+      Serial.println("ERR toolong");
+    }
+  }
 }

@@ -399,3 +399,46 @@ kbd {
 .usage-list li + li {
   margin-top: 0.35rem;
 }
+
+.lilygo-connect-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.lilygo-status {
+  font-size: 0.9rem;
+}
+
+.lilygo-button {
+  cursor: pointer;
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: inherit;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.lilygo-button.primary {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  font-weight: 600;
+}
+
+.lilygo-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.lilygo-ack,
+.lilygo-counter {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+}
+
+.lilygo-form button[type='submit'] {
+  margin-top: 0.5rem;
+}

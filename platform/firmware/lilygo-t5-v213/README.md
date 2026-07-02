@@ -68,8 +68,11 @@ Unlike the ESP32-S3 (native USB, shows as `/dev/cu.usbmodem*`), the T5's classic
 
 ## Customizing
 
-- Change on-screen text in `src/main.cpp` (the `display.print("T5: ...")` line). The `T5:` prefix distinguishes it from the T-Display S3 sketch (`S3:`).
+- Change the default on-screen text in `src/main.cpp` (`displayText`). The `T5:` prefix distinguishes it from the T-Display S3 sketch (`S3:`).
+- Or use the [WebSerial UI](https://qromabots.github.io/arena-prototype/lilygo) to push text live from Chrome/Edge.
 - If the display shows distorted lines, change `GxEPD2_213_GDEY0213B74` to `GxEPD2_213_BN` in the driver line (see comment in source).
+
+On boot the board sends `HELLO T5-2.13`. Send `SET <text>` (newline-terminated, max 80 chars) to update the display; the board replies `OK` after refresh.
 
 ## Troubleshooting
 

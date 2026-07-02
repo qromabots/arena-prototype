@@ -12,6 +12,8 @@
 #include "pin_config.h"
 
 #define GFX_BL PIN_LCD_BL
+#define MAX_TEXT_LEN 80
+#define SET_PREFIX "SET "
 
 Arduino_DataBus *bus = new Arduino_ESP32PAR8Q(
     PIN_LCD_DC, PIN_LCD_CS, PIN_LCD_WR, PIN_LCD_RD,
@@ -22,6 +24,38 @@ Arduino_DataBus *bus = new Arduino_ESP32PAR8Q(
 Arduino_GFX *gfx = new Arduino_ST7789(
     bus, PIN_LCD_RES, 1 /* rotation */, true /* IPS */,
     170, 320, 35, 0, 35, 0);
+
+String displayText = "S3: Placeholder Text";
+String lineBuffer;
+
+void renderDisplay() {
+  gfx->fillScreen(RGB565_BLACK);
+  gfx->setTextSize(2);
+  gfx->setTextColor(RGB565_WHITE);
+  gfx->setCursor(10, 20);
+  gfx->println(displayText);
+}
+
+void processLine(const String &line) {
+  if (!line.startsWith(SET_PREFIX)) {
+    Serial.println("ERR unknown");
+    return;
+  }
+
+  const String nextText = line.substring(strlen(SET_PREFIX));
+  if (nextText.length() == 0) {
+    Serial.println("ERR empty");
+    return;
+  }
+  if (nextText.length() > MAX_TEXT_LEN) {
+    Serial.println("ERR toolong");
+    return;
+  }
+
+  displayText = nextText;
+  renderDisplay();
+  Serial.println("OK");
+}
 
 void setup() {
   pinMode(PIN_POWER_ON, OUTPUT);
@@ -39,21 +73,32 @@ void setup() {
   }
   delay(500);
   Serial.println("\n--- LilyGO T-Display S3 Setup Starting ---");
+  Serial.println("HELLO T-DISPLAY-S3");
 
   if (!gfx->begin()) {
     Serial.println("Display init failed!");
     return;
   }
 
-  gfx->fillScreen(RGB565_BLACK);
-  gfx->setTextSize(2);
-  gfx->setTextColor(RGB565_WHITE);
-  gfx->setCursor(10, 20);
-  gfx->println("S3: Placeholder Text"); // Change Text Here
-
-  Serial.println("Display initialized.");
+  renderDisplay();
+  Serial.println("Display initialized. Waiting for WebSerial commands.");
 }
 
 void loop() {
-  // Put repetitive tasks here, or use ESP32 Deep Sleep
+  while (Serial.available()) {
+    const char c = Serial.read();
+    if (c == '\n' || c == '\r') {
+      if (lineBuffer.length() > 0) {
+        processLine(lineBuffer);
+        lineBuffer = "";
+      }
+      continue;
+    }
+
+    lineBuffer += c;
+    if (lineBuffer.length() > MAX_TEXT_LEN + strlen(SET_PREFIX)) {
+      lineBuffer = "";
+      Serial.println("ERR toolong");
+    }
+  }
 }

@@ -81,7 +81,10 @@ pio device monitor -b 115200
 
 ## Customizing
 
-Change on-screen text in `lilygo-t-display-s3.ino` (`Placeholder Text`).
+- Change the default on-screen text in `lilygo-t-display-s3.ino` (`displayText`).
+- Or use the [WebSerial UI](https://qromabots.github.io/arena-prototype/lilygo) to push text live from Chrome/Edge.
+
+On boot the board sends `HELLO T-DISPLAY-S3`. Send `SET <text>` (newline-terminated, max 80 chars) to update the display; the board replies `OK` after refresh.
 
 ## Troubleshooting
 

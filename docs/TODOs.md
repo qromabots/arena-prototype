@@ -85,14 +85,15 @@ meant to be independently demoable, in the spirit of the milestones in
 A parallel hardware track, independent of the arena sync work. Goal: physical boards
 that display text pushed from the browser, as a stepping stone toward bound robots.
 
-- [ ] **Flash a LilyGo board to print text.** Bring up one of the LilyGo dev boards
+- [x] **Flash a LilyGo board to print text.** Bring up one of the LilyGo dev boards
   (e.g. T-Display) with custom firmware that renders text to its screen. Establish the
   toolchain (PlatformIO / Arduino-ESP32), pin/display config, and a minimal "hello"
   render. Demo: text hardcoded in firmware shows on the board.
-- [ ] **Update board text from a webpage over WebSerial.** Add a serial protocol
+- [x] **Update board text from a webpage over WebSerial.** Add a serial protocol
   (newline-delimited or framed) the firmware reads, and a browser page that connects via
   `navigator.serial`, sends typed text, and the board re-renders it live. Demo: type in
-  the browser → board updates.
+  the browser → board updates. Web UI: [`/lilygo`](https://qromabots.github.io/arena-prototype/lilygo).
+  Firmware in [`platform/firmware/`](../platform/firmware/).
 - [ ] **Fold into the arena.** Once both work, drive the board's text from synced arena
   state (player names, scores, status) so the physical display reflects the live game —
   the bridge from this thread back into the qromabots arena.
