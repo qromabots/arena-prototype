@@ -400,11 +400,64 @@ kbd {
   margin-top: 0.35rem;
 }
 
+.lilygo-sync {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.lilygo-sync-status {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.lilygo-sync-hint {
+  font-size: 0.8rem;
+}
+
+.lilygo-sync .lilygo-sync-hint:not(:last-child) {
+  flex: 1 1 12rem;
+}
+
+.lilygo-sync-button {
+  cursor: pointer;
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: inherit;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.lilygo-sync-button:hover {
+  border-color: var(--accent);
+}
+
+.lilygo-sync-button.primary {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+}
+
 .lilygo-connect-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem 1rem;
+}
+
+.lilygo-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .lilygo-status {
@@ -439,6 +492,7 @@ kbd {
   font-size: 0.85rem;
 }
 
-.lilygo-form button[type='submit'] {
-  margin-top: 0.5rem;
+.lilygo-form-actions button[type='submit'] {
+  cursor: pointer;
+  font: inherit;
 }
